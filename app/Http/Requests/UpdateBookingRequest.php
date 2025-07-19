@@ -21,8 +21,19 @@ class UpdateBookingRequest extends FormRequest
             'status' => 'sometimes|required|in:confirmed,cancelled,completed',
             'notes' => 'nullable|string',
             'extras' => 'nullable|array',
-            'extras.*.extra_id' => 'required|exists:extras,id',
+            'extras.*.id' => 'required|exists:extras,id',
             'extras.*.quantity' => 'required|integer|min:1'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'property_id.exists' => 'Selected property does not exist',
+            'guest_id.exists' => 'Selected guest does not exist',
+            'check_out_date.after' => 'Check-out date must be after check-in date',
+            'extras.*.id.exists' => 'Selected extra does not exist',
+            'extras.*.quantity.min' => 'Extra quantity must be at least 1'
         ];
     }
 }

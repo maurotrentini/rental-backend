@@ -22,15 +22,8 @@ class BookingService
                 throw new \Exception('Property is not available for the selected dates');
             }
 
-            // Create or find guest
-            $guest = Guest::firstOrCreate(
-                ['email' => $data['guest_email']],
-                [
-                    'name' => $data['guest_name'],
-                    'phone' => $data['guest_phone'] ?? null,
-                    'notes' => $data['guest_notes'] ?? null
-                ]
-            );
+            // Get existing guest
+            $guest = Guest::findOrFail($data['guest_id']);
 
             // Calculate total price
             $totalPrice = $this->calculatePrice($data);
@@ -38,11 +31,11 @@ class BookingService
             // Create booking
             $booking = Booking::create([
                 'property_id' => $data['property_id'],
-                'guest_id' => $guest->id,
+                'guest_id' => $data['guest_id'],
                 'check_in_date' => $data['check_in_date'],
                 'check_out_date' => $data['check_out_date'],
                 'total_price' => $totalPrice,
-                'status' => 'confirmed'
+                'status' => $data['status'] ?? 'confirmed'
             ]);
 
             // Attach extras if any

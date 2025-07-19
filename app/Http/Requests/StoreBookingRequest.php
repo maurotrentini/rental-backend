@@ -21,7 +21,7 @@ class StoreBookingRequest extends FormRequest
             'check_out_date' => 'required|date|after:check_in_date',
             'notes' => 'nullable|string',
             'extras' => 'nullable|array',
-            'extras.*.extra_id' => 'required|exists:extras,id',
+            'extras.*.id' => 'required|exists:extras,id',
             'extras.*.quantity' => 'required|integer|min:1'
         ];
     }
@@ -37,7 +37,7 @@ class StoreBookingRequest extends FormRequest
             'check_in_date.after_or_equal' => 'Check-in date cannot be in the past',
             'check_out_date.required' => 'Check-out date is required',
             'check_out_date.after' => 'Check-out date must be after check-in date',
-            'extras.*.extra_id.exists' => 'Selected extra does not exist',
+            'extras.*.id.exists' => 'Selected extra does not exist',
             'extras.*.quantity.min' => 'Extra quantity must be at least 1'
         ];
     }
